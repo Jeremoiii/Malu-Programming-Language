@@ -31,7 +31,6 @@ public class Ast implements Statement {
     }
 
     public void listAst() {
-        System.out.println("AST Kind: " + kind);
         listBody(body);
     }
 
