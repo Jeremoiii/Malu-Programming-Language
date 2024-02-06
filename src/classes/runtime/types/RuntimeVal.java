@@ -1,5 +1,5 @@
 package classes.runtime.types;
 
-public enum ValueTypes {
+public enum RuntimeVal {
     NULL, NUMBER
 }
