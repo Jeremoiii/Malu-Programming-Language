@@ -1,5 +1,9 @@
 package classes.Interfaces;
 
-public interface Statement {
-    String getKind();
+import classes.Types.NodeType;
+
+public abstract class Statement {
+    public NodeType kind;
+
+    public abstract NodeType getKind();
 }

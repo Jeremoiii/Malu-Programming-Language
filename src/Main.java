@@ -1,6 +1,8 @@
 import classes.Ast;
+import classes.Interfaces.Program;
 import classes.Lexer;
 import classes.Parser;
+import classes.runtime.Interpreter;
 import classes.utils.ObjectPrinter;
 
 import java.util.List;
@@ -25,9 +27,10 @@ public class Main {
                 System.exit(0);
             }
 
-            Ast program = parser.produceAST(input);
+            Program program = parser.produceAST(input);
 
             System.out.println(ObjectPrinter.deserializeObjectToString(program));
+            System.out.println(ObjectPrinter.deserializeObjectToString(Interpreter.evaluate(program)));
         }
     }
 

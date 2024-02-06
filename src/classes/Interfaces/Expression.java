@@ -1,3 +1,3 @@
 package classes.Interfaces;
 
-public interface Expression extends Statement {}
+public abstract class Expression extends Statement {}

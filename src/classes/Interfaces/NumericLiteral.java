@@ -1,21 +1,22 @@
 package classes.Interfaces;
 
-import classes.Interfaces.Expression;
+import classes.Types.NodeType;
 
-public class NumericLiteral implements Expression {
-    private final double value;
-    private final String kind = "NumericLiteral";
+public class NumericLiteral extends Expression {
+    private float value;
+    private NodeType kind;
 
-    public NumericLiteral(double value) {
-        this.value = value;
+    public NumericLiteral(float number) {
+        this.kind = NodeType.NUMERIC_LITERAL;
+        this.value = number;
     }
 
     @Override
-    public String getKind() {
-        return kind;
+    public NodeType getKind() {
+        return this.kind;
     }
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 }

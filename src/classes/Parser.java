@@ -1,55 +1,48 @@
 package classes;
 
 import classes.Interfaces.*;
+import classes.Types.NodeType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Parser {
     private List<Lexer.Token> tokens = new ArrayList<>();
 
     private boolean notEndOfFile() {
-        return tokens.get(0).getType() != Lexer.TokenType.EndOfFile;
+        return tokens.get(0).type != Lexer.TokenType.EndOfFile;
     }
 
     private Lexer.Token at() {
         return tokens.get(0);
     }
 
-    private Lexer.Token next() {
-        Lexer.Token previous = tokens.remove(0);
-        System.out.println(previous);
-        return previous;
+    private Lexer.Token next() { // eat token
+        return tokens.remove(0);
     }
 
     private void expect(Lexer.TokenType type, String err) {
-        if (tokens.isEmpty()) {
-            System.out.println("Parser Error:\n" + err + " - Expecting: " + type);
-            return;
-        }
-
         Lexer.Token prev = tokens.remove(0);
 
-        if (prev.getType() != type) {
-            System.out.println("Parser Error:\n" + err + " " + prev + " - Expecting: " + type);
-            System.exit(0);
+        if (prev == null || prev.type != type) {
+            System.out.println("Parser Error:\n" + err + prev + "- Expecting: " + type);
+            System.exit(1);
         }
     }
 
     private Statement parseStatement() {
-        return this.parseExpression();
+        return parseExpression();
     }
 
     private Expression parseExpression() {
-        return this.parseAdditiveExpression();
+        return parseAdditiveExpression();
     }
 
     private Expression parseAdditiveExpression() {
-        Expression left = this.parseMultiplicativeExpression();
+        Expression left = parseMultiplicativeExpression();
 
-        while (this.at().getValue().equals("+") || this.at().getValue().equals("-")) {
-            String operator = this.next().getValue();
-            Expression right = this.parseMultiplicativeExpression();
+        while (at().value.equals("+") || at().value.equals("-")) {
+            String operator = next().value;
+            Expression right = parseMultiplicativeExpression();
 
             left = new BinaryExpr(left, right, operator);
         }
@@ -58,11 +51,11 @@ public class Parser {
     }
 
     private Expression parseMultiplicativeExpression() {
-        Expression left = this.parsePrimaryExpression();
+        Expression left = parsePrimaryExpression();
 
-        while (this.at().getValue().equals("/") || this.at().getValue().equals("*") || this.at().getValue().equals("%")) {
-            String operator = this.next().getValue();
-            Expression right = this.parsePrimaryExpression();
+        while (at().value.equals("/") || at().value.equals("*") || at().value.equals("%")) {
+            String operator = next().value;
+            Expression right = parsePrimaryExpression();
 
             left = new BinaryExpr(left, right, operator);
         }
@@ -71,43 +64,43 @@ public class Parser {
     }
 
     private Expression parsePrimaryExpression() {
-        Lexer.Token token = at();
+        Lexer.TokenType token = at().type;
 
-        switch (token.getType()) {
+        switch (token) {
             case Identifier:
-                return new Identifier(next().getValue());
+                return new Identifier(next().value);
 
-            case NullLiteral:
-                this.next();
+            case Null:
+                next();
                 return new NullLiteral();
 
             case Number:
-                return new NumericLiteral(Double.parseDouble(next().getValue()));
+                return new NumericLiteral(Float.parseFloat(next().value));
 
             case OpenParen:
-                this.next();
-                Expression value = this.parseExpression();
-                this.expect(Lexer.TokenType.CloseParen, "Unexpected token found during parsing. Expected closing parent!");
+                next();
+                Expression value = parseExpression();
+                expect(Lexer.TokenType.CloseParen, "Unexpected token found inside parenthesised expression. Expected closing parenthesis.");
                 return value;
 
             default:
-                System.err.println("Unexpected token found during parsing! " + at().getValue());
+                System.err.println("Unexpected token found during parsing!" + at());
                 System.exit(1);
-                return null;
+                return null; // This will never be reached, but Java requires a return statement
         }
     }
 
-    public Ast produceAST(String sourceCode) {
-        tokens = new Lexer().tokenize(sourceCode);
+    public Program produceAST(String sourceCode) {
+        tokens = Lexer.tokenize(sourceCode);
 
-        Ast ast = new Ast();
-        ast.setKind("Program");
-        ast.setBody(new ArrayList<>());
+        Program program = new Program();
+        program.kind = NodeType.PROGRAM;
+        program.body = new ArrayList<>();
 
         while (notEndOfFile()) {
-            ast.getBody().add(parseStatement());
+            program.body.add(parseStatement());
         }
 
-        return ast;
+        return program;
     }
 }

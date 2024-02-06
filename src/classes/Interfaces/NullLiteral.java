@@ -1,17 +1,19 @@
 package classes.Interfaces;
 
 import classes.Interfaces.Expression;
+import classes.Types.NodeType;
 
-public class NullLiteral implements Expression {
-    private final String value;
+public class NullLiteral extends Expression {
+    private final String value = "null";
+    private NodeType kind;
 
     public NullLiteral() {
-        this.value = "null";
+        this.kind = NodeType.NULL_LITERAL;
     }
 
     @Override
-    public String getKind() {
-        return "NullLiteral";
+    public NodeType getKind() {
+        return kind;
     }
 
     public String getValue() {

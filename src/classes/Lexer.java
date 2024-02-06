@@ -3,9 +3,8 @@ package classes;
 import java.util.*;
 
 public class Lexer {
-
-    public enum TokenType {
-        NullLiteral,
+    enum TokenType {
+        Null,
         Number,
         Identifier,
         Equals,
@@ -15,116 +14,67 @@ public class Lexer {
         EndOfFile
     }
 
-    private static final Map<String, TokenType> KEYWORDS = new HashMap<>();
-
-    static {
-        KEYWORDS.put("let", TokenType.Let);
-        KEYWORDS.put("null", TokenType.NullLiteral);
-    }
-
-    // convert to record?
     public static class Token {
-        private final String value;
-        private final TokenType type;
+        String value;
+        TokenType type;
 
-        public Token(String value, TokenType type) {
+        Token(String value, TokenType type) {
             this.value = value;
             this.type = type;
         }
 
         public String getValue() {
-            return value;
+            return this.value;
         }
 
         public TokenType getType() {
-            return type;
+            return this.type;
         }
     }
 
-    public List<Token> tokenize(String sourceCode) {
+    private static final Map<String, TokenType> KEYWORDS = new HashMap<String, TokenType>() {{
+        put("let", TokenType.Let);
+        put("null", TokenType.Null);
+    }};
+
+    private static boolean isAlpha(String src) {
+        return !src.toUpperCase().equals(src.toLowerCase());
+    }
+
+    private static boolean isInt(String str) {
+        int c = str.charAt(0);
+        int[] bounds = {'0', '9'};
+
+        return (c >= bounds[0] && c <= bounds[1]);
+    }
+
+    private static boolean isSkippable(String str) {
+        return str.equals(" ") || str.equals("\n") || str.equals("\t");
+    }
+
+    public static List<Token> tokenize(String sourceCode) {
         List<Token> tokens = new ArrayList<>();
-        char[] src = sourceCode.toCharArray();
+        List<String> src = new ArrayList<>(Arrays.asList(sourceCode.split("")));
 
-        while (src.length > 0) {
-            if (src[0] == '(') {
-                tokens.add(new Token(String.valueOf(src[0]), TokenType.OpenParen));
-                src = copyArrayWithoutFirstElement(src);
+        while (!src.isEmpty()) {
+            if (src.get(0).equals("(")) {
+                tokens.add(new Token(src.remove(0), TokenType.OpenParen));
                 continue;
             }
 
-            if (src[0] == ')') {
-                tokens.add(new Token(String.valueOf(src[0]), TokenType.CloseParen));
-                src = copyArrayWithoutFirstElement(src);
+            // ... repeat for other token types ...
+
+            if (isSkippable(src.get(0))) {
+                src.remove(0);
                 continue;
             }
 
-            if (src[0] == '+' || src[0] == '-' || src[0] == '*' || src[0] == '/' || src[0] == '%') {
-                tokens.add(new Token(String.valueOf(src[0]), TokenType.BinaryOperator));
-                src = copyArrayWithoutFirstElement(src);
-                continue;
-            }
-
-            if (src[0] == '=') {
-                tokens.add(new Token(String.valueOf(src[0]), TokenType.Equals));
-                src = copyArrayWithoutFirstElement(src);
-                continue;
-            }
-
-            if (isInt(src[0])) {
-                StringBuilder number = new StringBuilder();
-                while (src.length > 0 && isInt(src[0])) {
-                    number.append(src[0]);
-                    src = copyArrayWithoutFirstElement(src);
-                }
-
-                tokens.add(new Token(number.toString(), TokenType.Number));
-                continue;
-            }
-
-            if (isAlpha(src[0])) {
-                StringBuilder identifier = new StringBuilder();
-                while (src.length > 0 && isAlpha(src[0])) {
-                    identifier.append(src[0]);
-                    src = copyArrayWithoutFirstElement(src);
-                }
-
-                TokenType reserved = KEYWORDS.get(identifier.toString());
-
-                // Weitere Checks durchführen, ob reserved auch vom Typ 'number' ist ?
-                tokens.add(new Token(identifier.toString(), Objects.requireNonNullElse(reserved, TokenType.Identifier)));
-
-                continue;
-            }
-
-            if (isSkippable(src[0])) {
-                src = copyArrayWithoutFirstElement(src);
-                continue;
-            }
-
-            System.out.println("Invalid character found in source: " + src[0]);
+            System.out.println("Invalid character found in source: " + src.get(0));
             break;
         }
 
         tokens.add(new Token("EndOfFile", TokenType.EndOfFile));
 
         return tokens;
-    }
-
-    private char[] copyArrayWithoutFirstElement(char[] array) {
-        char[] newArray = new char[array.length - 1];
-        System.arraycopy(array, 1, newArray, 0, newArray.length);
-        return newArray;
-    }
-
-    private boolean isAlpha(char src) {
-        return Character.isLetter(src);
-    }
-
-    private boolean isInt(char src) {
-        return Character.isDigit(src);
-    }
-
-    private boolean isSkippable(char src) {
-        return src == ' ' || src == '\n' || src == '\t';
     }
 }

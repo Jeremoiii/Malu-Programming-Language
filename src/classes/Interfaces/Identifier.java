@@ -1,17 +1,20 @@
 package classes.Interfaces;
 
-import classes.Interfaces.Expression;
+import classes.Types.NodeType;
 
-public class Identifier implements Expression {
-    private final String symbol;
-    private final String kind = "Identifier";
+import java.security.Key;
+
+public class Identifier extends Expression {
+    private String symbol;
+    private NodeType kind;
 
     public Identifier(String symbol) {
+        this.kind = NodeType.IDENTIFIER;
         this.symbol = symbol;
     }
 
     @Override
-    public String getKind() {
+    public NodeType getKind() {
         return kind;
     }
 

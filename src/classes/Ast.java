@@ -1,24 +1,25 @@
 package classes;
 
 import classes.Interfaces.Statement;
+import classes.Types.NodeType;
 
 import java.util.List;
 
-public class Ast implements Statement {
+public class Ast extends Statement {
 
-    private String kind;
+    private NodeType kind;
     private List<Statement> body;
 
     public Ast() {
-        this.kind = "Program";
+        this.kind = NodeType.PROGRAM;
     }
 
     @Override
-    public String getKind() {
+    public NodeType getKind() {
         return kind;
     }
 
-    public void setKind(String kind) {
+    public void setKind(NodeType kind) {
         this.kind = kind;
     }
 
@@ -28,22 +29,5 @@ public class Ast implements Statement {
 
     public void setBody(List<Statement> body) {
         this.body = body;
-    }
-
-    public void listAst() {
-        System.out.println("AST Kind: " + kind);
-        listBody(body);
-    }
-
-    private void listBody(List<Statement> statements) {
-        for (Statement statement : statements) {
-            String indent = "  ".repeat(1);
-            System.out.println(indent + "- " + statement.getKind());
-
-            // Wenn es sich um ein Ast-Objekt handelt, rufe listBody rekursiv auf
-            if (statement instanceof Ast nestedAst) {
-                nestedAst.listAst();
-            }
-        }
     }
 }
