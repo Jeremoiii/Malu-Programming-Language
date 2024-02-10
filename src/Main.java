@@ -1,52 +1,34 @@
-import classes.Ast;
-import classes.Interfaces.Program;
-import classes.Interfaces.Statement;
-import classes.Lexer;
-import classes.Parser;
-import classes.runtime.Interpreter;
-import classes.utils.ObjectPrinter;
+import frontend.AST.AST;
+import frontend.AST.Statement;
+import frontend.Parser.Parser;
+import runtime.Environment;
+import runtime.Interpreter;
+import runtime.RuntimeValue;
+import utils.ObjectPrinter;
 
-import java.util.List;
-import java.util.Scanner;
+import java.nio.file.*;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-//        testLexer();
-        repl();
+        run("./Malu/script.malu");
     }
 
-    public static void repl() {
+    public static void run(String filename) {
         Parser parser = new Parser();
-        System.out.println("\nRepl v0.1");
+        Environment env = Environment.createGlobalEnvironment();
 
-        // Continue Repl Until User Stops Or Types `exit`
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("> ");
-            String input = scanner.nextLine();
+        String input = "malu()";
+//        try {
+//            input = new String(Files.readAllBytes(Paths.get(filename)));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-            // Check for no user input or exit keyword.
-            if (input == null || input.toLowerCase().contains("exit")) {
-                System.exit(1);
-            }
+        Statement program = parser.produceAST(input);
+        RuntimeValue result = Interpreter.evaluate(program, env);
 
-            // Produce AST From source code
-            Ast program = parser.produceAST(input);
-            System.out.println(ObjectPrinter.deserializeObjectToString(program));
-
-            Object results = new Interpreter().evaluate(program);
-            System.out.println(ObjectPrinter.deserializeObjectToString(results));
-
-        }
-    }
-
-    public static void testLexer() {
-        Lexer lexer = new Lexer();
-        String sourceCode = "(let x = 42)";
-        List<Lexer.Token> tokens = lexer.tokenize(sourceCode);
-
-        for (Lexer.Token token : tokens) {
-            System.out.println("Token: " + token.getValue() + ", Type: " + token.getType());
-        }
+        System.out.println(ObjectPrinter.deserializeObjectToString(program));
+        System.out.println(ObjectPrinter.deserializeObjectToString(result));
     }
 }
