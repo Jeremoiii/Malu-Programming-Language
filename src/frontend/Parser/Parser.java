@@ -11,6 +11,7 @@ import frontend.Lexer.Token;
 import java.util.ArrayList;
 import java.util.List;
 import frontend.Lexer.TokenType;
+import buffer.StringBuffer;
 
 public class Parser {
     private List<Token> tokens = new ArrayList<>();
@@ -32,7 +33,9 @@ public class Parser {
 
         if (prev == null || prev.getType() != type) {
             System.out.println("Parser Error:\n" + err + prev + "- Expecting: " + type);
+//            StringBuffer.getInstance().append("Parser Error:\n" + err + prev + "- Expecting: " + type);
             System.exit(1);
+            return null;
         }
 
         return prev;
@@ -51,17 +54,11 @@ public class Parser {
     }
 
     private Statement parseStatement() {
-        switch (this.at().getType()) {
-            case LET:
-            case CONST:
-                return this.parseVariableDeclaration();
-
-            case FUNCTION:
-                return this.parseFunctionDeclaration();
-
-            default:
-                return this.parseExpression();
-        }
+        return switch (this.at().getType()) {
+            case LET, CONST -> this.parseVariableDeclaration();
+            case FUNCTION -> this.parseFunctionDeclaration();
+            default -> this.parseExpression();
+        };
     }
 
     private Statement parseFunctionDeclaration() {
@@ -89,7 +86,7 @@ public class Parser {
         this.expect(TokenType.CLOSE_BRACE, "Expected closing brace following function declaration.");
 
         FunctionDeclaration func = new FunctionDeclaration();
-        func.setBody((Statement) body);
+        func.setBody(body);
         func.setName(name);
         func.setParameters(params);
 
@@ -277,26 +274,18 @@ public class Parser {
         while (this.at().getType() == TokenType.DOT || this.at().getType() == TokenType.OPEN_BRACKET) {
             Token operator = this.next();
             Expression property;
-            boolean computed;
 
             if (operator.getType() == TokenType.DOT) {
-                computed = false;
-                property = this.parsePrimaryExpression();
-
-                if (!"Identifier".equals(((Property) property).getKind())) {
-                    throw new RuntimeException("Cannot use dot operator with right hand side being an identifier.");
-                }
+                throw new RuntimeException("Cannot use dot operator with right hand side being an identifier.");
             } else {
-                computed = true;
                 property = this.parseExpression();
-
                 this.expect(TokenType.CLOSE_BRACKET, "Expected closing bracket following computed property.");
             }
 
             MemberExpr memberExpr = new MemberExpr();
             memberExpr.setObject(object);
             memberExpr.setProperty(property);
-            memberExpr.setComputed(computed);
+            memberExpr.setComputed(true);
 
             object = memberExpr;
         }
@@ -318,6 +307,11 @@ public class Parser {
                 numericLiteral.setValue(Float.parseFloat(this.next().getValue()));
                 return numericLiteral;
 
+            case STRING:
+                StringLiteral stringLiteral = new StringLiteral();
+                stringLiteral.setValue(this.next().getValue());
+                return stringLiteral;
+
             case OPEN_PAREN:
                 this.next();
                 Expression value = this.parseExpression();
@@ -326,6 +320,7 @@ public class Parser {
 
             default:
                 System.err.println("Unexpected token found during parsing! " + this.at());
+//                StringBuffer.getInstance().append("Unexpected token found during parsing! " + this.at());
                 System.exit(1);
                 return null; // This line is required as all paths in the function need to return a value.
         }

@@ -24,4 +24,9 @@ public class NativeFunctionValue extends RuntimeValue {
     public RuntimeValue call(List<RuntimeValue> args, Environment env) {
         return call.call(args, env);
     }
+
+    @Override
+    public Object getValue() {
+        return null;
+    }
 }

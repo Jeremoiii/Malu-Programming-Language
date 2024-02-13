@@ -16,5 +16,6 @@ public enum NodeType {
     OBJECT_LITERAL,
     NUMERIC_LITERAL,
     IDENTIFIER,
-    BINARY_EXPR
+    BINARY_EXPR,
+    STRING_LITERAL,
 }

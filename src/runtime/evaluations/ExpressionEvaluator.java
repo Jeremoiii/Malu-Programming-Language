@@ -1,6 +1,8 @@
 package runtime.evaluations;
 
+import buffer.StringBuffer;
 import frontend.AST.Expression;
+import frontend.AST.NodeType;
 import frontend.AST.Statement;
 import frontend.AST.expressions.*;
 import runtime.Environment;
@@ -10,7 +12,6 @@ import runtime.values.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
 
 import static runtime.Interpreter.evaluate;
@@ -25,6 +26,7 @@ public class ExpressionEvaluator {
             case "/" -> {
                 if (right.getValue() == 0) {
                     System.err.println("Trying to divide by 0 is not allowed!");
+//                    StringBuffer.getInstance().append("Trying to divide by 0 is not allowed!");
                     System.exit(1);
                 }
                 yield left.getValue() / right.getValue();
@@ -40,7 +42,7 @@ public class ExpressionEvaluator {
         RuntimeValue left = evaluate(binOperation.getLeft(), env);
         RuntimeValue right = evaluate(binOperation.getRight(), env);
 
-        if (left.getType().equals("number") && right.getType().equals("number")) {
+        if (left.getType().equals(RuntimeValue.ValueTypes.NUMBER) && right.getType().equals(RuntimeValue.ValueTypes.NUMBER)) {
             return evaluateNumericExpression((NumberValue) left, (NumberValue) right, binOperation.getOperator());
         }
 
@@ -52,7 +54,7 @@ public class ExpressionEvaluator {
     }
 
     public static RuntimeValue evaluateAssignment(AssignmentExpr node, Environment env) {
-        if (!node.getAssigne().getKind().equals("Identifier")) {
+        if (!node.getAssigne().getKind().equals(NodeType.IDENTIFIER)) {
             throw new IllegalArgumentException("Invalid LHS inside assignment expr " + node.getAssigne().toString());
         }
 
@@ -68,7 +70,7 @@ public class ExpressionEvaluator {
             Expression value = property.getValue();
             RuntimeValue runtimeValue = value == null ? env.lookupVariable(key) : Interpreter.evaluate(value, env);
 
-            runtimeObject.getProperties().put(key, runtimeValue);
+            runtimeObject.getValue().put(key, runtimeValue);
         }
 
         return runtimeObject;
@@ -97,7 +99,7 @@ public class ExpressionEvaluator {
 
             RuntimeValue result = new NullValue();
             for (Statement statement : fn.getBody()) {
-                result = Interpreter.evaluate((Expression) statement, scope);
+                result = Interpreter.evaluate(statement, scope);
             }
 
             return result;

@@ -4,6 +4,7 @@ public enum TokenType {
     // Literal Types
     NUMBER,
     IDENTIFIER,
+    STRING,
 
     // Keywords
     LET,

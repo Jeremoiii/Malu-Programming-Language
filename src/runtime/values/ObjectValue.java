@@ -12,7 +12,7 @@ public class ObjectValue extends RuntimeValue {
         this.properties = properties;
     }
 
-    public Map<String, RuntimeValue> getProperties() {
+    public Map<String, RuntimeValue> getValue() {
         return properties;
     }
 

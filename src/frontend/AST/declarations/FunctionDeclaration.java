@@ -9,7 +9,7 @@ public class FunctionDeclaration extends Statement {
     private List<String> parameters;
     private String name;
 
-    private Statement body;
+    private List<Statement> body;
 
     public FunctionDeclaration() {
         this.kind = NodeType.FUNCTION_DECLARATION;
@@ -31,11 +31,11 @@ public class FunctionDeclaration extends Statement {
         this.name = name;
     }
 
-    public Statement getBody() {
+    public List<Statement> getBody() {
         return body;
     }
 
-    public void setBody(Statement body) {
+    public void setBody(List<Statement> body) {
         this.body = body;
     }
 }

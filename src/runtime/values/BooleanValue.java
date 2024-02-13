@@ -11,7 +11,8 @@ public class BooleanValue extends RuntimeValue {
         this.value = value;
     }
 
-    public boolean isValue() {
+    @Override
+    public Boolean getValue() {
         return value;
     }
 

@@ -51,4 +51,9 @@ public class FunctionValue extends RuntimeValue {
     public void setBody(List<Statement> body) {
         this.body = body;
     }
+
+    @Override
+    public Object getValue() {
+        return null;
+    }
 }

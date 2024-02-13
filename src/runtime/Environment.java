@@ -1,15 +1,17 @@
 package runtime;
 
+import buffer.StringBuffer;
 import runtime.values.*;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 import utils.ObjectPrinter;
 
 public class Environment {
-    private Environment parent;
-    private Map<String, RuntimeValue> variables;
-    private Set<String> constants;
+    private final Environment parent;
+    private final Map<String, RuntimeValue> variables;
+    private final Set<String> constants;
 
     public Environment(Environment parentENV) {
         this.parent = parentENV;
@@ -59,21 +61,34 @@ public class Environment {
         return this.parent.resolve(varName);
     }
 
-    public static Environment createGlobalEnvironment() {
+    public static Environment createGlobalEnvironment(boolean... print) {
         Environment env = new Environment(null);
 
+        // Variables
         env.declareVariable("true", new BooleanValue(true), true);
         env.declareVariable("false", new BooleanValue(false), true);
         env.declareVariable("null", new NullValue(), true);
 
         // Native Functions
-        env.declareVariable("print", new NativeFunctionValue((args, scppe) -> {
-            System.out.println(ObjectPrinter.deserializeObjectToString(args.stream().map(arg -> arg.toString()).collect(Collectors.joining(", "))));
+        env.declareVariable("print", new NativeFunctionValue((args, scope) -> {
+            StringBuilder returnValue = new StringBuilder();
+
+            args.stream()
+                    .map(arg -> arg.getValue() != null ? arg.getValue().toString() : "[" + arg.getType() + "]")
+                    .forEach(arg -> {
+                        if (print.length > 0) {
+                            System.out.println(arg);
+                        }
+                        StringBuffer.getInstance().append(arg);
+                    });
             return new NullValue();
         }), true);
 
         env.declareVariable("log", new NativeFunctionValue((args, scope) -> {
-            System.out.println(args);
+            if (print.length > 0) {
+                System.out.println(ObjectPrinter.deserializeObjectToString(args));
+            }
+            StringBuffer.getInstance().append(ObjectPrinter.deserializeObjectToString(args));
             return new NullValue();
         }), true);
 

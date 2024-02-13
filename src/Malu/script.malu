@@ -1,0 +1,30 @@
+let foo = 50 / 2;
+print(foo)
+
+foo = 2
+print(foo)
+
+const y = 10 - 5 * 2;
+print(y)
+
+const obj = {
+    x: 100,
+    y: 32,
+    foo: foo,
+    complex: {
+        bar: true,
+    },
+};
+
+func add(x, y) {
+    let result = x + y;
+    result
+}
+
+func sub(x, y) {
+    let result = x - y;
+    result
+}
+
+const result = add(foo, 4);
+print(add(2, 3) + sub(10, 5))

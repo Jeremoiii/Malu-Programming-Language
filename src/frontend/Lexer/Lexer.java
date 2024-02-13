@@ -1,5 +1,7 @@
 package frontend.Lexer;
 
+import buffer.StringBuffer;
+
 import java.util.*;
 
 public class Lexer {
@@ -77,6 +79,16 @@ public class Lexer {
                 tokens.add(new Token(String.valueOf(src.poll()), TokenType.DOT));
                 continue;
             }
+            if (c == '"') {
+                src.poll();
+                StringBuilder string = new StringBuilder();
+                while (!src.isEmpty() && src.peek() != '"') {
+                    string.append(src.poll());
+                }
+                src.poll();
+                tokens.add(new Token(string.toString(), TokenType.STRING));
+                continue;
+            }
 
             if (isInt(c)) {
                 StringBuilder number = new StringBuilder();
@@ -102,7 +114,8 @@ public class Lexer {
                 continue;
             }
 
-            System.out.println("Invalid character found in source: " + c);
+//            System.out.println("Invalid character found in source: " + c);
+            StringBuffer.getInstance().append("Invalid character found in source: " + c);
             break;
         }
 

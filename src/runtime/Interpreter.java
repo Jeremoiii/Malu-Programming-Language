@@ -1,6 +1,6 @@
 package runtime;
 
-import frontend.AST.Expression;
+import buffer.StringBuffer;
 import frontend.AST.Program;
 import frontend.AST.Statement;
 import frontend.AST.declarations.FunctionDeclaration;
@@ -21,6 +21,9 @@ public class Interpreter {
             case NUMERIC_LITERAL:
                 NumericLiteral numericLiteral = (NumericLiteral) astNode;
                 return new NumberValue(numericLiteral.getValue());
+
+            case STRING_LITERAL:
+                return new runtime.values.StringValue(((frontend.AST.expressions.StringLiteral) astNode).getValue());
 
             case IDENTIFIER:
                 return ExpressionEvaluator.evaluateIdentifier((Identifier) astNode, env);
@@ -47,8 +50,10 @@ public class Interpreter {
                 return Evaluations.evaluateFunctionDeclaration((FunctionDeclaration) astNode, env);
 
             default:
+
                 System.err.println("This AST Node has not yet been setup for interpretation: " + astNode);
                 System.exit(1);
+//                StringBuffer.getInstance().append("This AST Node has not yet been setup for interpretation: " + astNode);
                 return null; // This line is unreachable but required for compilation
         }
     }

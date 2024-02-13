@@ -10,7 +10,7 @@ public class NumberValue extends RuntimeValue {
         this.value = value;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
