@@ -75,24 +75,7 @@ public class Editor {
 
             // Add some buttons to the panel
             for (int i = 1; i <= 5; i++) {
-                JButton button = new JButton("script" + i + ".malu");
-                button.setFont(new Font("monospaced", Font.PLAIN, 12));
-                button.setPreferredSize(new Dimension(250, 20));
-                button.setHorizontalAlignment(SwingConstants.LEFT);
-                button.setBackground(new Color(0x34384c));
-                button.setForeground(new Color(0xf0f0f0));
-                button.setBorderPainted(false);
-                button.setFocusPainted(true);
-
-                button.addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mouseEntered(java.awt.event.MouseEvent evt) {
-                        button.setBackground(new Color(0x4f5b93));
-                    }
-                    public void mouseExited(java.awt.event.MouseEvent evt) {
-                        button.setBackground(new Color(0x34384c));
-                    }
-                });
-
+                JButton button = createButton(i);
                 buttonPanel.add(button);
             }
 
@@ -103,5 +86,26 @@ public class Editor {
             frame.pack();
             frame.setVisible(true);
         });
+    }
+
+    private static JButton createButton(int i) {
+        JButton button = new JButton("script" + i + ".malu");
+        button.setFont(new Font("monospaced", Font.PLAIN, 12));
+        button.setPreferredSize(new Dimension(250, 20));
+        button.setHorizontalAlignment(SwingConstants.LEFT);
+        button.setBackground(new Color(0x34384c));
+        button.setForeground(new Color(0xf0f0f0));
+        button.setBorderPainted(false);
+        button.setFocusPainted(true);
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(0x4f5b93));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(0x34384c));
+            }
+        });
+        return button;
     }
 }

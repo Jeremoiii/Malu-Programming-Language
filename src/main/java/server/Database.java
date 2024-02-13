@@ -16,9 +16,11 @@ public class Database {
 
         System.out.println("Connected to database");
 
-        db.executeStatement("SELECT * FROM projects WHERE");
+        db.executeStatement("SELECT * FROM projects");
         QueryResult result = db.getCurrentQueryResult();
 
-        System.out.println(result);
+        System.out.println(ObjectPrinter.deserializeObjectToString(result.getData()));
+
+       db.close();
     }
 }

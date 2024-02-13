@@ -39,11 +39,11 @@ public class DatabaseConnector {
 		// Auch pUsername und pPassword werden nicht verwendet, da SQLite sie nicht
 		// unterstuetzt.
 		try {
-			// Laden der Treiberklasse
-			Class.forName("org.sqlite.JDBC");
+			// Laden der Treiberklasse (MySQL)
+			Class.forName("com.mysql.cj.jdbc.Driver");
 
-			// Verbindung herstellen
-			connection = DriverManager.getConnection("jdbc:sqlite:" + pDatabase);
+			// Verbindung herstellen (MySQL)
+			connection = DriverManager.getConnection("jdbc:mysql://" + pIP + ":" + pPort + "/" + pDatabase, pUsername, pPassword);
 
 		} catch (Exception e) {
 			message = e.getMessage();
