@@ -69,7 +69,7 @@ public class Editor {
 
             // Create a panel for the buttons
             buttonPanel = new JPanel();
-//            buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+            // buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
             buttonPanel.setBackground(new Color(0x34384c));
             buttonPanel.setPreferredSize(new Dimension(250, 50));
 

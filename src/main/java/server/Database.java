@@ -21,6 +21,6 @@ public class Database {
 
         System.out.println(ObjectPrinter.deserializeObjectToString(result.getData()));
 
-       db.close();
+        db.close();
     }
 }

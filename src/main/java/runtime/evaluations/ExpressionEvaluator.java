@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+import static java.lang.System.*;
 import static runtime.Interpreter.evaluate;
 
 
@@ -25,9 +26,9 @@ public class ExpressionEvaluator {
             case "*" -> left.getValue() * right.getValue();
             case "/" -> {
                 if (right.getValue() == 0) {
-                    System.err.println("Trying to divide by 0 is not allowed!");
+                    err.println("Trying to divide by 0 is not allowed!");
 //                    StringBuffer.getInstance().append("Trying to divide by 0 is not allowed!");
-                    System.exit(1);
+                    exit(1);
                 }
                 yield left.getValue() / right.getValue();
             }

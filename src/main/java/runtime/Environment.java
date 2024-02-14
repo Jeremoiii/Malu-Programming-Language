@@ -36,6 +36,7 @@ public class Environment {
         Environment env = this.resolve(varName);
 
         if (env.constants.contains(varName)) {
+            StringBuffer.getInstance().append("Cannot reassign constant " + varName);
             throw new RuntimeException("Cannot reassign constant " + varName);
         }
 

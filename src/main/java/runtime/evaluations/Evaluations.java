@@ -34,7 +34,7 @@ public class Evaluations {
                 declaration.getName(),
                 declaration.getParameters(),
                 env,
-                (List<Statement>) declaration.getBody()
+                declaration.getBody()
         );
 
         return env.declareVariable(declaration.getName(), func, true);
