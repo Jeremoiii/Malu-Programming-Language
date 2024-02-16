@@ -1,11 +1,11 @@
 package editor;
 
+import editor.listeners.ActionEventListener;
+import editor.listeners.KeyEventListener;
+import editor.listeners.MouseEventListener;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class Editor {
     private JFrame frame;
@@ -22,7 +22,7 @@ public class Editor {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setBackground(new Color(0x34384c));
 
-            textArea = new JTextArea(28, 150);
+            textArea = new JTextArea(28, 120);
             textArea.setFont(new Font("monospaced", Font.PLAIN, 16));
             textArea.setTabSize(4);
             textArea.setBackground(new Color(0x34384c));
@@ -30,28 +30,7 @@ public class Editor {
             textArea.setCaretColor(new Color(0xf0f0f0));
 
             scrollPane = new JScrollPane(textArea);
-            textArea.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    char c = e.getKeyChar();
-                    if (c == '"' || c == '(' || c == '{' || c == '[' || c == '\'') {
-                        e.consume(); // consume the original event
-                        int pos = textArea.getCaretPosition();
-                        String insert = c + "" + getClosingCharacter(c);
-                        textArea.insert(insert, pos);
-                        textArea.setCaretPosition(pos + 1); // set the caret between the characters
-                    }
-                }
-
-                private char getClosingCharacter(char c) {
-                    return switch (c) {
-                        case '(' -> ')';
-                        case '{' -> '}';
-                        case '[' -> ']';
-                        default -> c;
-                    };
-                }
-            });
+            textArea.addKeyListener(new KeyEventListener(textArea));
 
             outputArea = new JTextArea(10, 60);
             outputArea.setEditable(false);
@@ -59,21 +38,12 @@ public class Editor {
             outputScrollPane = new JScrollPane(outputArea);
 
             runButton = new JButton("Run Code");
-            runButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    CodeRunner code = new CodeRunner(textArea.getText());
-                    outputArea.setText(code.getOutput());
-                }
-            });
+            runButton.addActionListener(new ActionEventListener(textArea, outputArea));
 
-            // Create a panel for the buttons
             buttonPanel = new JPanel();
-            // buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
             buttonPanel.setBackground(new Color(0x34384c));
             buttonPanel.setPreferredSize(new Dimension(250, 50));
 
-            // Add some buttons to the panel
             for (int i = 1; i <= 5; i++) {
                 JButton button = createButton(i);
                 buttonPanel.add(button);
@@ -89,7 +59,7 @@ public class Editor {
     }
 
     private static JButton createButton(int i) {
-        JButton button = new JButton("script" + i + ".malu");
+        JButton button = new JButton("(test) script" + i + ".malu");
         button.setFont(new Font("monospaced", Font.PLAIN, 12));
         button.setPreferredSize(new Dimension(250, 20));
         button.setHorizontalAlignment(SwingConstants.LEFT);
@@ -98,14 +68,7 @@ public class Editor {
         button.setBorderPainted(false);
         button.setFocusPainted(true);
 
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0x4f5b93));
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0x34384c));
-            }
-        });
+        button.addMouseListener(new MouseEventListener(button));
         return button;
     }
 }
