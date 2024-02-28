@@ -27,7 +27,6 @@ public class ExpressionEvaluator {
             case "/" -> {
                 if (right.getValue() == 0) {
                     err.println("Trying to divide by 0 is not allowed!");
-//                    StringBuffer.getInstance().append("Trying to divide by 0 is not allowed!");
                     exit(1);
                 }
                 yield left.getValue() / right.getValue();
