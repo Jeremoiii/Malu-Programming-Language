@@ -100,6 +100,16 @@ public class Environment {
             return new NullValue();
         }), true);
 
+        env.declareVariable("getArg", new NativeFunctionValue((args, scope) -> {
+           if (args.size() != 1) {
+               throw new RuntimeException("isEven function expects 1 argument");
+           }
+
+           System.out.println("args: " + args.get(0).getValue());
+
+           return new NullValue();
+        }), true);
+
         FunctionCall timeFunction = (_args, _scope) -> new NumberValue(System.currentTimeMillis());
 
         env.declareVariable("time", new NativeFunctionValue(timeFunction), true);
