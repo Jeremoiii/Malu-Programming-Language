@@ -35,7 +35,8 @@ public class RuntimeServer extends Server {
 
                 QueryResult isValid = db.execute("SELECT * FROM `malu_user` WHERE `user` = '" + loginUser.getUsername() + "' AND `password` = '" + loginUser.getPassword() + "'");
 
-                Callback.Resolve(this, ip, port, "login", isValid.getData().length != 0 ? "true" : "false");
+                boolean valid = isValid != null && isValid.getData().length != 0;
+                Callback.Resolve(this, ip, port, "login", valid ? "true" : "false");
                 break;
 
             case "net:register":

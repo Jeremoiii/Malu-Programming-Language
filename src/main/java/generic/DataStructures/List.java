@@ -174,6 +174,41 @@ public class List<ContentType> {
 		}
 	}
 
+	// VERÄNDER -> get Methode um einen Wert zu bekommen:
+	public ContentType get(int index) {
+		if (index < 0 || index >= this.size()) {
+			return null;
+		}
+		this.toFirst();
+		for (int i = 0; i < index; i++) {
+			this.next();
+		}
+		return this.getContent();
+	}
+
+	// VERÄNDERT -> size Methode um die Größe der Liste zu bekommen:
+	public int size() {
+		int size = 0;
+		this.toFirst();
+		while (this.hasAccess()) {
+			size++;
+			this.next();
+		}
+		return size;
+	}
+
+	// VERÄNDERT -> set Methode um einen Wert zu setzen:
+	public void set(int index, ContentType content) {
+		if (index < 0 || index >= this.size()) {
+			return;
+		}
+		this.toFirst();
+		for (int i = 0; i < index; i++) {
+			this.next();
+		}
+		this.setContent(content);
+	}
+
 	/**
 	 * Falls es ein aktuelles Objekt gibt (hasAccess() == true) und pContent
 	 * ungleich null ist, wird das aktuelle Objekt durch pContent ersetzt. Sonst

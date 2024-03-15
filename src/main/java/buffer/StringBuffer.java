@@ -1,5 +1,7 @@
 package buffer;
 
+
+// Diese Klasse repräsentiert einen StringBuffer, der in der Lage ist, Strings zu speichern und zu verändern.
 public class StringBuffer {
     private static StringBuffer instance;
 

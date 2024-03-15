@@ -63,8 +63,6 @@ public class Login extends JFrame {
                     return projects;
                 });
 
-                ObjectPrinter.deserializeObjectToString(files);
-
                 new Editor(files, client);
             }
         });

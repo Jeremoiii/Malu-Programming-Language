@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+// AES Klasse, die die Verschlüsselung und Entschlüsselung von Strings ermöglicht.
 public class AES {
     public static String encrypt(String plaintext, String key) throws Exception {
         if (key.length() < 16) {
@@ -39,6 +40,8 @@ public class AES {
         return new String(original);
     }
 
+
+    // Lokaler Test um zu demonstrieren, was die Methoden machen.
     public static void main(String[] args) {
         try {
             String plaintext = "Hello, world!";

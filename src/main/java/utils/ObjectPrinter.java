@@ -3,6 +3,8 @@ package utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+// Diese Klasse ist verantwortlich für das Deserialisieren von Java-Objekten in JSON-Strings.
+// So kann man besser sehen, welche Daten in den Objekten enthalten sind.
 public final class ObjectPrinter {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -12,9 +14,9 @@ public final class ObjectPrinter {
     }
 
     /**
-     * This method is responsible for de-serializing the Java Object into Json String.
+     * Diese Methode ist verantwortlich für das Deserialisieren des Java-Objekts in einen JSON-String.
      *
-     * @param object Object to be de-serialized.
+     * @param object Das zu deserialisierende Objekt.
      * @return String
      */
     public static String deserializeObjectToString(final Object object) {

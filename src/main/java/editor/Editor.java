@@ -10,6 +10,7 @@ import shared.Projects;
 import utils.JSON.JSON;
 import utils.JSON.JSONStringModifier;
 import utils.JSON.MapToJSONConverter;
+import utils.ObjectPrinter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,15 +103,27 @@ public class Editor {
             frame.pack();
             frame.setVisible(true);
 
+            // Diese hässliche Scheiße hier wird verwendet, um die Projekte zu entpacken und dann zu sortieren.
+            // Es gibt sicherlich einen besseren Weg das zu tun, aber ich habe keine Ahnung wie und jetzt auch keine Zeit mehr dafür...
+            Projects tempProjects = new Projects();
             projects.getNetProjects().toFirst();
             while (projects.getNetProjects().hasAccess()) {
                 String JSONString = new String(String.valueOf(projects.getNetProjects().getContent()));
                 JSONString = MapToJSONConverter.convertToJSON(JSONString);
                 NetProjectFile netProjectFile = JSON.parse(JSONStringModifier.removeOwnerPart(JSONString), NetProjectFile.class);
+                tempProjects.addNetProject(netProjectFile);
+                projects.getNetProjects().next();
+            }
+
+            tempProjects.sortProjects();
+            tempProjects.getNetProjects().toFirst();
+            while (tempProjects.getNetProjects().hasAccess()) {
+                NetProjectFile netProjectFile = tempProjects.getNetProjects().getContent();
+
                 this.addProject(netProjectFile.getName(), netProjectFile.getContent(), false);
                 file.setContent(netProjectFile.getContent());
 
-                projects.getNetProjects().next();
+                tempProjects.getNetProjects().next();
             }
         });
     }

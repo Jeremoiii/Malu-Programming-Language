@@ -1,6 +1,9 @@
 package shared;
 
 import generic.DataStructures.List;
+import utils.QuickSort;
+
+import java.util.Collections;
 
 public class Projects {
     private List<ProjectFile> projects;
@@ -29,6 +32,10 @@ public class Projects {
         }
 
         return size;
+    }
+
+    public void sortProjects() {
+        QuickSort.sort(this.netProjects, 0, this.netProjects.size() - 1);
     }
 
     public void addNetProject(NetProjectFile project) {
