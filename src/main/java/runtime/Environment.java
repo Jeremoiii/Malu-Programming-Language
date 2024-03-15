@@ -21,7 +21,7 @@ public class Environment {
 
     public RuntimeValue declareVariable(String varName, RuntimeValue value, boolean constant) {
         if (this.variables.containsKey(varName)) {
-            throw new RuntimeException("Variable " + varName + " wurde im Scope bereits deklariert!
+            throw new RuntimeException("Variable " + varName + " wurde im Scope bereits deklariert!");
         }
 
         this.variables.put(varName, value);
