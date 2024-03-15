@@ -18,7 +18,7 @@ Der Editor speichert die erstellten Dateien gesichert in einer Datenbank und kan
 ## Starten:
 
 1. Starte XAMPP und starte Apache und MySQL
-2. Installation der Datenbank und Tabellen [mehr Infos hier](./src/java/imports/import.sql)
+2. Installation der Datenbank und Tabellen [mehr Infos hier](./src/main/java/imports/import.sql)
    1. Datenbank erstellen
    2. Tabellen erstellen
 3. `Main.java` starten
