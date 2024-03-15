@@ -114,7 +114,6 @@ public class Lexer {
                 continue;
             }
 
-//            System.out.println("Invalid character found in source: " + c);
             StringBuffer.getInstance().append("Invalid character found in source: " + c);
             break;
         }

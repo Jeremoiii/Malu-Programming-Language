@@ -26,7 +26,7 @@ public class ExpressionEvaluator {
             case "*" -> left.getValue() * right.getValue();
             case "/" -> {
                 if (right.getValue() == 0) {
-                    err.println("Trying to divide by 0 is not allowed!");
+                    err.println("Durch 0 Teilen ist nicht erlaubt!");
                     exit(1);
                 }
                 yield left.getValue() / right.getValue();
@@ -55,7 +55,7 @@ public class ExpressionEvaluator {
 
     public static RuntimeValue evaluateAssignment(AssignmentExpr node, Environment env) {
         if (!node.getAssigne().getKind().equals(NodeType.IDENTIFIER)) {
-            throw new IllegalArgumentException("Invalid LHS inside assignment expr " + node.getAssigne().toString());
+            throw new IllegalArgumentException("Ungültige linke Seite innerhalb des Zuweisungsausdrucks " + node.getAssigne().toString());
         }
 
         String varName = ((Identifier) node.getAssigne()).getSymbol();
@@ -105,6 +105,6 @@ public class ExpressionEvaluator {
             return result;
         }
 
-        throw new RuntimeException("Trying to call a non-function value as a function: " + func);
+        throw new RuntimeException("Versuch, einen Nicht-Funktionswert als Funktion aufzurufen: " + func);
     }
 }

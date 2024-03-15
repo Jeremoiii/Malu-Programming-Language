@@ -14,11 +14,11 @@ public class KeyEventListener extends KeyAdapter {
     public void keyTyped(KeyEvent event) {
         char c = event.getKeyChar();
         if (c == '"' || c == '(' || c == '{' || c == '[' || c == '\'') {
-            event.consume(); // consume the original event
+            event.consume();
             int pos = textArea.getCaretPosition();
             String insert = c + "" + getClosingCharacter(c);
             textArea.insert(insert, pos);
-            textArea.setCaretPosition(pos + 1); // set the caret between the characters
+            textArea.setCaretPosition(pos + 1);
         }
 
     }

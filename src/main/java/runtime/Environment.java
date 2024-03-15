@@ -21,7 +21,7 @@ public class Environment {
 
     public RuntimeValue declareVariable(String varName, RuntimeValue value, boolean constant) {
         if (this.variables.containsKey(varName)) {
-            throw new RuntimeException("Variable " + varName + " already declared in this scope");
+            throw new RuntimeException("Variable " + varName + " wurde im Scope bereits deklariert!
         }
 
         this.variables.put(varName, value);
@@ -36,8 +36,8 @@ public class Environment {
         Environment env = this.resolve(varName);
 
         if (env.constants.contains(varName)) {
-            StringBuffer.getInstance().append("Cannot reassign constant " + varName);
-            throw new RuntimeException("Cannot reassign constant " + varName);
+            StringBuffer.getInstance().append("Konstante kann keinen neuen Wert erhalten: " + varName);
+            throw new RuntimeException("Konstante kann keinen neuen Wert erhalten: " + varName);
         }
 
         env.variables.put(varName, value);
@@ -56,7 +56,7 @@ public class Environment {
         }
 
         if (this.parent == null) {
-            throw new RuntimeException("Cannot resolve variable " + varName);
+            throw new RuntimeException("Variable kann nicht aufgelöst werden: " + varName);
         }
 
         return this.parent.resolve(varName);
@@ -102,7 +102,7 @@ public class Environment {
 
         env.declareVariable("getArg", new NativeFunctionValue((args, scope) -> {
            if (args.size() != 1) {
-               throw new RuntimeException("isEven function expects 1 argument");
+               throw new RuntimeException("Die Funktion isEven erwartet ein Argument");
            }
 
            System.out.println("args: " + args.get(0).getValue());

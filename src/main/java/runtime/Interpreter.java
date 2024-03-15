@@ -51,10 +51,9 @@ public class Interpreter {
 
             default:
 
-                System.err.println("This AST Node has not yet been setup for interpretation: " + astNode);
+                System.err.println("Dieser AST-Knoten wurde noch nicht für die Interpretation eingerichtet." + astNode);
                 System.exit(1);
-//                StringBuffer.getInstance().append("This AST Node has not yet been setup for interpretation: " + astNode);
-                return null; // This line is unreachable but required for compilation
+                return null;
         }
     }
 }
