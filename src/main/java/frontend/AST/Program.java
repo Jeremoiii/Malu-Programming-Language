@@ -1,6 +1,5 @@
 package frontend.AST;
 
-//TODO: mit generischer Klasse ersetzen.
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ public class Program extends Statement {
 
     public Program() {
         this.kind = NodeType.PROGRAM;
-        this.body = new ArrayList<>(); // Initialize the body list
+        this.body = new ArrayList<>();
     }
 
     public List<Statement> getBody() {
