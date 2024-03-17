@@ -24,8 +24,8 @@ Der Editor speichert die erstellten Dateien gesichert in einer Datenbank und kan
 3. `Main.java` starten
 
 ## Allgemeine Informationen:
-- `./buffer` Alles was mit dem Speichern von großen Strings zutun hat. Wird primär für die Ausgabe der Programmiersprache verwendet.
-- `/client` Ausgangspunkt für alle Interaktionen zwischen Client und Server. Alles was von der Client an den Server muss wird hier verarbeitet.
+- `/buffer` Alles was mit dem Speichern von großen Strings zutun hat. Wird primär für die Ausgabe der Programmiersprache verwendet.
+- `/client` Ausgangspunkt für alle Interaktionen zwischen Client und Server. Alles, was von der Client an den Server muss, wird hier verarbeitet.
 - `/editor` Alles was mit dem Editor zutun hat. Login, Registrieren, Listeners, CodeRunner, etc.
 - `/frontend` Core der Programmiersprache. Hier befinden sich AST, Lexer und Parser
 - `/generic` Alle NRW Klassen.
